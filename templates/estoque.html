@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque</title>
+</head>
+<body>
+    <h1>Estoque</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Produto</th>
+                <th>Tipo</th>
+                <th>Quantidade</th>
+                <th>Data</th>
+                <th>Usuários</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mov in movimentacoes %}
+            <tr>
+                <td>{{ mov.produto_id }}</td>
+                <td>{{ mov.tipo_movimentacao }}</td>
+                <td>{{ mov.quantidade }}</td>
+                <td>{{ mov.data_movimentacao }}</td>
+                <td>{{ mov.usuario }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Nenhum produto cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
