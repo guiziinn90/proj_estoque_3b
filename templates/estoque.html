@@ -1,37 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estoque</title>
 </head>
 <body>
-    <h1>Estoque</h1>
-    <table>
+    <h1>Movimentações de Estoque</h1>
+    <p>Usuário logado: {{ usuario }}</p>
+
+    <table border="1" cellspacing="0" cellpadding="8">
         <thead>
             <tr>
                 <th>ID Produto</th>
+                <th>Nome do Produto</th>
                 <th>Tipo</th>
                 <th>Quantidade</th>
                 <th>Data</th>
-                <th>Usuários</th>
+                <th>Usuário</th>
             </tr>
         </thead>
         <tbody>
             {% for mov in movimentacoes %}
             <tr>
                 <td>{{ mov.produto_id }}</td>
+                <td>{{ mov.nome_produto }}</td>  <!-- Nome do produto -->
                 <td>{{ mov.tipo_movimentacao }}</td>
                 <td>{{ mov.quantidade }}</td>
-                <td>{{ mov.data_movimentacao }}</td>
-                <td>{{ mov.usuario }}</td>
+                <td>{{ mov.data_movimentacao.strftime('%d/%m/%Y %H:%M') if mov.data_movimentacao else '-' }}</td>
+                <td>{{ mov.nome_usuario }}</td> <!-- Nome do usuário -->
             </tr>
             {% else %}
             <tr>
-                <td colspan="5">Nenhum produto cadastrado.</td>
+                <td colspan="6">Nenhuma movimentação registrada.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <br>
+    <a href="{{ url_for('cadastro_produto') }}">← Voltar ao Cadastro de Produtos</a>
 </body>
 </html>

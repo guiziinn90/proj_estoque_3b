@@ -11,10 +11,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'uma_chave_muito_secreta'
 # Configuração para postgreSQL
 DB_USER = 'postgres'
-DB_PASSWORD = 'geleira@1'
+DB_PASSWORD = 'wcc@2023'
 DB_HOST = 'localhost'
-DB_NAME = 'py_estoque_3b'
-DB_PORT = '5433'
+DB_NAME = 'Proj_estoque_3b'
+DB_PORT = '5432'
 # URL-encode a senha para garantir que caracteres especiais sejam tratados corretamente
 ENCODED_DB_PASSWORD = quote_plus(DB_PASSWORD)
 
@@ -52,7 +52,7 @@ def execute_db(query, args=()):
     db.commit()
     # Retorna o ID do último registro inserido, útil para o SERIAL
     if cur.description:
-        last_id = cur.getchone()[0]
+        last_id = cur.fetchone()[0]
     else:
         last_id = None
     cur.close()
@@ -155,10 +155,24 @@ def saida_produto(produto_id):
     
     return redirect(url_for('cadastro_produto'))
 
+
+
 @app.route('/estoque')
 @login_required
 def estoque():
-    movimentacoes = query_db('SELECT * FORM movimentacao_estoque AS m JOIN usuarios AS u ON m.usario_id = u.id ORDER BY m.data_movimentacao DESC')
+    movimentacoes = query_db('''
+        SELECT 
+            m.produto_id,
+            p.nome AS nome_produto,
+            m.tipo_movimentacao,
+            m.quantidade,
+            m.data_movimentacao,
+            u.nome AS nome_usuario
+        FROM movimentacao_estoque AS m
+        JOIN produtos AS p ON m.produto_id = p.id
+        JOIN usuarios AS u ON m.usuario_id = u.id
+        ORDER BY m.data_movimentacao DESC
+    ''')
     return render_template('estoque.html', movimentacoes=movimentacoes, usuario=session.get('usuario_nome'))
 
 if __name__ == '__main__':
